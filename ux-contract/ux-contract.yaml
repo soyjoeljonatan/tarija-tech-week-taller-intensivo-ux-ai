@@ -1,0 +1,143 @@
+# UX Contract — TTW Session Scout
+# Workshop: UX/AI — De la idea al prototipo digital
+# Versión: 1.0
+# Propósito: contrato verificable para prototipado AI-native.
+
+product:
+  name: "TTW Session Scout"
+  type: "microexperiencia móvil de recomendación de sesiones"
+  purpose: >
+    Ayudar a una persona que asiste a Tarija Tech Week a elegir rápidamente
+    sesiones relevantes según sus intereses y el tiempo disponible.
+  prototype_scope: "demo educativa; no reemplaza la agenda oficial"
+
+user:
+  primary:
+    role: "asistente a una conferencia tecnológica"
+    context:
+      - "usa el teléfono mientras se desplaza entre salas"
+      - "tiene poco tiempo para comparar sesiones"
+      - "puede tener conectividad inestable"
+      - "puede no conocer a los speakers"
+    needs:
+      - "elegir una sesión útil sin leer toda la agenda"
+      - "entender por qué se recomienda una sesión"
+      - "guardar una opción para revisarla después"
+
+job_to_be_done:
+  statement: >
+    Cuando tengo una ventana de tiempo durante el evento, quiero elegir
+    rápidamente una sesión relevante para mis intereses, para invertir bien
+    mi tiempo sin revisar manualmente toda la agenda.
+  success_outcome: "obtener una decisión razonable en menos de 30 segundos"
+
+inputs:
+  required:
+    - "uno o más intereses"
+    - "hora desde la que estoy disponible"
+    - "tiempo disponible"
+  interests:
+    - "AI"
+    - "UX"
+    - "Development"
+    - "Product"
+    - "Business"
+    - "Security"
+
+outputs:
+  recommendation:
+    max_items: 3
+    each_item_must_show:
+      - "título"
+      - "hora"
+      - "sala"
+      - "speaker"
+      - "por qué coincide con los intereses elegidos"
+
+constraints:
+  product:
+    - "mobile first"
+    - "máximo 3 pasos desde entrada hasta recomendación"
+    - "sin login"
+    - "sin backend"
+    - "sin APIs externas"
+    - "usar únicamente el dataset entregado"
+    - "no inventar speakers, sesiones, horarios o salas"
+    - "debe seguir funcionando después de cargar el archivo local"
+  UX:
+    - "una acción primaria clara por pantalla"
+    - "no usar patrones de dark UX"
+    - "no dejar callejones sin salida"
+    - "si no hay coincidencias, ofrecer recuperación inmediata"
+    - "explicar de forma breve el motivo de cada recomendación"
+  accessibility:
+    - "navegable por teclado"
+    - "focus visible"
+    - "labels claros"
+    - "controles con área táctil suficiente"
+    - "no depender solo del color para comunicar estado"
+    - "contraste legible"
+    - "respeto por prefers-reduced-motion"
+  engineering:
+    - "sin dependencias remotas para la versión offline"
+    - "sin secretos"
+    - "sin telemetría"
+    - "guardar favoritos solo en localStorage"
+
+states:
+  - id: "default"
+    required: true
+  - id: "configured"
+    required: true
+  - id: "results"
+    required: true
+  - id: "no_results"
+    required: true
+    recovery: "cambiar intereses, ampliar tiempo o ver todas las sesiones"
+  - id: "saved"
+    required: true
+  - id: "offline"
+    required: true
+    behavior: "la funcionalidad principal sigue operativa con el dataset local"
+  - id: "error"
+    required: false
+    note: "solo si se introduce una operación que pueda fallar"
+
+decision_logic:
+  principle: >
+    Priorizar coincidencia temática; luego sesiones que caben dentro de la
+    ventana disponible; no inferir popularidad ni calidad del speaker.
+  explainability:
+    required: true
+    example: "Coincide con AI + Development y comienza dentro de tu ventana."
+
+success_metrics_for_demo:
+  - id: "SM-01"
+    metric: "time_to_recommendation"
+    target: "<= 30 segundos en prueba moderada"
+  - id: "SM-02"
+    metric: "steps_to_recommendation"
+    target: "<= 3 pasos"
+  - id: "SM-03"
+    metric: "dead_ends"
+    target: "0"
+  - id: "SM-04"
+    metric: "fabricated_sessions"
+    target: "0"
+
+non_goals:
+  - "crear una agenda oficial"
+  - "predecir qué speaker es mejor"
+  - "usar perfiles personales o datos sensibles"
+  - "hacer networking"
+  - "vender entradas"
+  - "sincronizar calendario"
+  - "recomendar usando datos no incluidos"
+
+data_provenance:
+  source: "Agenda oficial Tarija Tech Week 2026"
+  source_url: "https://tarijatechweek.com/agenda/"
+  source_snapshot: "versión 02/10/2026"
+  note: >
+    El dataset del workshop es un subconjunto simplificado para demostración.
+    Ante diferencias, manda la agenda oficial en línea.
