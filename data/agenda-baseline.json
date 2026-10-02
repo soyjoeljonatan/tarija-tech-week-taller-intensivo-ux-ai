@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "name": "TTW Session Scout — baseline",
+    "event": "Tarija Tech Week 2026",
+    "default_day": "2026-10-02",
+    "source": "https://tarijatechweek.com/agenda/",
+    "source_file": "agenda_tarija_tech_week_2026.md",
+    "source_snapshot": "2026-10-02",
+    "immutable": true,
+    "disclaimer": "Subconjunto educativo de la agenda oficial. La agenda en línea manda."
+  },
+  "sessions": [
+    {
+      "id": "ttw-fri-main-1300-ai-dev",
+      "date": "2026-10-02",
+      "start": "13:00",
+      "end": "13:50",
+      "venue": "Main Stage",
+      "title": "Programar con IA: nuevas habilidades y prototipado rápido para devs LATAM",
+      "speakers": ["Cintia Tahirih Jaliri Pancca", "Franco Galeano", "Joel Jonatan Ramiro Mamani", "Pablo Marcelo López Narváez", "Victor Manuel Castro Tarraga"],
+      "tags": ["AI", "Development", "Product"]
+    },
+    {
+      "id": "ttw-fri-ai-1300-cache",
+      "date": "2026-10-02",
+      "start": "13:00",
+      "end": "13:30",
+      "venue": "Sala IA",
+      "title": "Caché inteligente para IA: acelerando RAG y LLMs con Valkey",
+      "speakers": ["Silvana Gutierrez Montaño"],
+      "tags": ["AI", "Development"]
+    },
+    {
+      "id": "ttw-fri-ai-1330-ux-healthtech",
+      "date": "2026-10-02",
+      "start": "13:30",
+      "end": "14:00",
+      "venue": "Sala IA",
+      "title": "UX y Psicología en Healthtech: Diseño centrado en personas",
+      "speakers": ["Ruben López"],
+      "tags": ["UX", "Product"]
+    },
+    {
+      "id": "ttw-fri-ai-1400-google-ai",
+      "date": "2026-10-02",
+      "start": "14:00",
+      "end": "14:30",
+      "venue": "Sala IA",
+      "title": "Desarrollo con de sistemas con IA de google, Prompt Engineer, Educación con IA, Productos",
+      "speakers": ["Juan Daniel Pardo Duran"],
+      "tags": ["AI", "Development"]
+    },
+    {
+      "id": "ttw-fri-ai-1630-optimize",
+      "date": "2026-10-02",
+      "start": "16:30",
+      "end": "17:00",
+      "venue": "Sala IA",
+      "title": "Inteligencia Artificial: Optimiza el presente, crea lo que falta",
+      "speakers": ["Amilkar Dominguez"],
+      "tags": ["AI", "Business", "Product"]
+    },
+    {
+      "id": "ttw-fri-main-1620-agents",
+      "date": "2026-10-02",
+      "start": "16:20",
+      "end": "17:10",
+      "venue": "Main Stage",
+      "title": "Agentes de IA (MCP), ciberseguridad y marketing digital para empresas",
+      "speakers": ["Alfredo Zambrana Ramírez", "Juan Daniel Pardo Duran", "Rodrigo Cuevas", "Ruben López", "Sergio Adrián Bejarano Carrasco"],
+      "tags": ["AI", "Development", "Security", "Business"]
+    },
+    {
+      "id": "ttw-fri-ai-1700-uxai",
+      "date": "2026-10-02",
+      "start": "17:00",
+      "end": "17:30",
+      "venue": "Sala IA",
+      "title": "Taller Intensivo UX/AI: De la Idea al Prototipo Digital en 50 Minutos.",
+      "speakers": ["Joel Jonatan Ramiro Mamani"],
+      "tags": ["AI", "UX", "Development", "Product"]
+    },
+    {
+      "id": "ttw-fri-block-1700-agent-bank",
+      "date": "2026-10-02",
+      "start": "17:00",
+      "end": "17:30",
+      "venue": "Sala Blockchain",
+      "title": "El primer banco de agentes de IA: crédito real para clientes que no son humanos",
+      "speakers": ["Ricardo Pari"],
+      "tags": ["AI", "Business", "Development"]
+    },
+    {
+      "id": "ttw-fri-ai-1730-brand-chatgpt",
+      "date": "2026-10-02",
+      "start": "17:30",
+      "end": "18:00",
+      "venue": "Sala IA",
+      "title": "Posiciona tu marca en ChatGPT, cómo hacer que la IA recomiende tu marca antes que la competencia",
+      "speakers": ["Leonardo Quisbert Parra"],
+      "tags": ["AI", "Business"]
+    }
+  ]
+}
