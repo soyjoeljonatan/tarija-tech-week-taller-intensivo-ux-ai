@@ -1,15 +1,25 @@
 # UX Contract — TTW Session Scout
 # Workshop: UX/AI — De la idea al prototipo digital
-# Versión: 1.0
-# Propósito: contrato verificable para prototipado AI-native.
+# Versión: 1.0-frozen
+# Fecha de freeze: 2026-10-02
+# Propósito: contrato verificable para prototipado AI-native con agenda actualizable.
 
 product:
   name: "TTW Session Scout"
   type: "microexperiencia móvil de recomendación de sesiones"
   purpose: >
     Ayudar a una persona que asiste a Tarija Tech Week a elegir rápidamente
-    sesiones relevantes según sus intereses y el tiempo disponible.
+    sesiones relevantes según sus intereses y el tiempo disponible, usando
+    una agenda cuya procedencia y versión sean visibles.
   prototype_scope: "demo educativa; no reemplaza la agenda oficial"
+  event_scope:
+    event: "Tarija Tech Week 2026"
+    venue: "Campo Ferial San Jacinto, Tarija"
+    default_day: "2026-10-02"
+    allowed_venues:
+      - "Main Stage"
+      - "Sala IA"
+      - "Sala Blockchain"
 
 user:
   primary:
@@ -19,20 +29,36 @@ user:
       - "tiene poco tiempo para comparar sesiones"
       - "puede tener conectividad inestable"
       - "puede no conocer a los speakers"
+      - "los horarios reales pueden retrasarse o cambiar durante el evento"
     needs:
       - "elegir una sesión útil sin leer toda la agenda"
       - "entender por qué se recomienda una sesión"
+      - "saber de qué versión de agenda provienen los datos"
       - "guardar una opción para revisarla después"
+  operator:
+    role: "persona que mantiene la agenda local de la demo"
+    needs:
+      - "importar una agenda actualizada desde .md o .pdf"
+      - "revisar cambios antes de aplicarlos"
+      - "detectar conflictos o datos ambiguos"
+      - "ajustar retrasos sin editar manualmente cada sesión"
 
 job_to_be_done:
-  statement: >
-    Cuando tengo una ventana de tiempo durante el evento, quiero elegir
-    rápidamente una sesión relevante para mis intereses, para invertir bien
-    mi tiempo sin revisar manualmente toda la agenda.
-  success_outcome: "obtener una decisión razonable en menos de 30 segundos"
+  primary:
+    statement: >
+      Cuando tengo una ventana de tiempo durante el evento, quiero elegir
+      rápidamente una sesión relevante para mis intereses, para invertir bien
+      mi tiempo sin revisar manualmente toda la agenda.
+    success_outcome: "obtener una decisión razonable en menos de 30 segundos"
+  secondary:
+    statement: >
+      Cuando la programación oficial cambia o el evento acumula retrasos,
+      quiero actualizar la agenda local de forma controlada, para evitar
+      recomendar horarios obsoletos o datos inventados.
+    success_outcome: "ningún cambio importado altera la agenda activa sin revisión humana"
 
 inputs:
-  required:
+  attendee_required:
     - "uno o más intereses"
     - "hora desde la que estoy disponible"
     - "tiempo disponible"
@@ -43,16 +69,32 @@ inputs:
     - "Product"
     - "Business"
     - "Security"
+  operator_optional:
+    accepted_schedule_files:
+      - ".md"
+      - ".pdf"
+    delay_adjustment:
+      presets_minutes: [5, 10, 15]
+      custom_minutes: true
 
 outputs:
   recommendation:
     max_items: 3
     each_item_must_show:
       - "título"
-      - "hora"
+      - "hora vigente"
       - "sala"
-      - "speaker"
+      - "speaker o speakers"
       - "por qué coincide con los intereses elegidos"
+  schedule_import_preview:
+    must_show:
+      - "sesiones nuevas"
+      - "sesiones eliminadas"
+      - "horarios modificados"
+      - "salas modificadas"
+      - "conflictos detectados"
+      - "campos ambiguos o no extraídos"
+      - "fuente y versión detectadas cuando estén disponibles"
 
 constraints:
   product:
@@ -60,16 +102,18 @@ constraints:
     - "máximo 3 pasos desde entrada hasta recomendación"
     - "sin login"
     - "sin backend"
-    - "sin APIs externas"
-    - "usar únicamente el dataset entregado"
-    - "no inventar speakers, sesiones, horarios o salas"
-    - "debe seguir funcionando después de cargar el archivo local"
+    - "sin APIs externas para el flujo principal"
+    - "usar únicamente la agenda activa confirmada"
+    - "no inventar speakers, sesiones, horarios, salas, ratings o descripciones"
+    - "debe seguir funcionando con la agenda activa almacenada localmente"
   UX:
     - "una acción primaria clara por pantalla"
     - "no usar patrones de dark UX"
     - "no dejar callejones sin salida"
     - "si no hay coincidencias, ofrecer recuperación inmediata"
     - "explicar de forma breve el motivo de cada recomendación"
+    - "la importación de agenda debe mostrar preview antes de aplicar cambios"
+    - "los warnings no pueden depender solo del color"
   accessibility:
     - "navegable por teclado"
     - "focus visible"
@@ -79,34 +123,118 @@ constraints:
     - "contraste legible"
     - "respeto por prefers-reduced-motion"
   engineering:
-    - "sin dependencias remotas para la versión offline"
     - "sin secretos"
     - "sin telemetría"
     - "guardar favoritos solo en localStorage"
+    - "guardar agenda activa y provenance localmente para el prototipo"
+    - "la versión offline no debe depender de recursos remotos"
+    - "la importación Markdown debe ser determinista cuando la estructura sea reconocible"
+    - "la importación PDF es best-effort y requiere validación humana"
+    - "agenda-baseline nunca se sobrescribe por una importación"
+    - "agenda-current solo cambia después de confirmación humana"
+
+schedule_data_model:
+  files:
+    baseline: "data/agenda-baseline.json"
+    current: "data/agenda-current.json"
+    provenance: "data/provenance.json"
+  baseline_rule: "snapshot inmutable usado como referencia y rollback"
+  current_rule: "única agenda usada por el motor de recomendaciones"
+  provenance_rule: "registra fuente, versión, fecha de importación y confirmación humana"
+  canonical_fields:
+    - "id"
+    - "date"
+    - "start"
+    - "end"
+    - "venue"
+    - "title"
+    - "speakers"
+    - "tags"
+  allowed_venues:
+    - "Main Stage"
+    - "Sala IA"
+    - "Sala Blockchain"
+
+schedule_ingestion:
+  principle: "parsear no equivale a aceptar"
+  markdown:
+    mode: "preferred"
+    expected_structure:
+      - "encabezado de fecha"
+      - "encabezado de sala"
+      - "tabla con Horario, Tema/Sesión y Ponentes/Participantes"
+    behavior:
+      - "normalizar horarios"
+      - "preservar texto fuente cuando exista ambigüedad"
+      - "no completar campos inexistentes por inferencia"
+  pdf:
+    mode: "best-effort"
+    behavior:
+      - "extraer texto si es posible"
+      - "marcar datos ambiguos como UNKNOWN"
+      - "no aplicar cambios automáticamente"
+  diff:
+    required: true
+    change_types:
+      - "added"
+      - "removed"
+      - "time_changed"
+      - "venue_changed"
+      - "speaker_changed"
+      - "ambiguous"
+  conflict_detection:
+    required: true
+    rules:
+      - "end debe ser posterior a start"
+      - "venue debe pertenecer a allowed_venues"
+      - "detectar sesiones solapadas dentro de la misma sala y fecha"
+      - "detectar posibles duplicados"
+      - "detectar campos obligatorios ausentes"
+  confirmation:
+    human_required: true
+    rule: "ninguna importación modifica agenda-current antes de confirmación explícita"
+  delay_adjustment:
+    supported: true
+    rule: >
+      Un offset temporal puede aplicarse a un rango de sesiones como ajuste operativo,
+      pero debe quedar visible como modificación local y no alterar agenda-baseline.
 
 states:
-  - id: "default"
-    required: true
-  - id: "configured"
-    required: true
-  - id: "results"
-    required: true
-  - id: "no_results"
-    required: true
-    recovery: "cambiar intereses, ampliar tiempo o ver todas las sesiones"
-  - id: "saved"
-    required: true
-  - id: "offline"
-    required: true
-    behavior: "la funcionalidad principal sigue operativa con el dataset local"
-  - id: "error"
-    required: false
-    note: "solo si se introduce una operación que pueda fallar"
+  attendee:
+    - id: "default"
+      required: true
+    - id: "configured"
+      required: true
+    - id: "results"
+      required: true
+    - id: "no_results"
+      required: true
+      recovery: "cambiar intereses, ampliar tiempo o ver todas las sesiones"
+    - id: "saved"
+      required: true
+    - id: "offline"
+      required: true
+      behavior: "la funcionalidad principal sigue operativa con agenda-current local"
+  operator:
+    - id: "schedule_import"
+      required: true
+    - id: "schedule_parsing"
+      required: true
+    - id: "schedule_preview"
+      required: true
+    - id: "schedule_conflicts"
+      required: true
+    - id: "schedule_confirmed"
+      required: true
+    - id: "schedule_import_error"
+      required: true
+      recovery: "mantener agenda-current sin cambios y permitir reintentar/cancelar"
 
 decision_logic:
   principle: >
     Priorizar coincidencia temática; luego sesiones que caben dentro de la
     ventana disponible; no inferir popularidad ni calidad del speaker.
+  schedule_source: "usar exclusivamente agenda-current"
   explainability:
     required: true
     example: "Coincide con AI + Development y comienza dentro de tu ventana."
@@ -117,27 +245,37 @@ success_metrics_for_demo:
     target: "<= 30 segundos en prueba moderada"
   - id: "SM-02"
     metric: "steps_to_recommendation"
-    target: "<= 3 pasos"
+    target: "<= 3 pasos principales"
   - id: "SM-03"
     metric: "dead_ends"
     target: "0"
   - id: "SM-04"
     metric: "fabricated_sessions"
     target: "0"
+  - id: "SM-05"
+    metric: "unconfirmed_schedule_mutations"
+    target: "0"
+  - id: "SM-06"
+    metric: "active_schedule_has_provenance"
+    target: "100%"
 
 non_goals:
-  - "crear una agenda oficial"
+  - "crear o reemplazar la agenda oficial"
+  - "garantizar extracción perfecta de cualquier PDF"
+  - "predecir retrasos automáticamente"
   - "predecir qué speaker es mejor"
   - "usar perfiles personales o datos sensibles"
   - "hacer networking"
   - "vender entradas"
   - "sincronizar calendario"
-  - "recomendar usando datos no incluidos"
+  - "recomendar usando datos no confirmados"
 
 data_provenance:
-  source: "Agenda oficial Tarija Tech Week 2026"
+  authoritative_source: "Agenda oficial Tarija Tech Week 2026"
   source_url: "https://tarijatechweek.com/agenda/"
   source_snapshot: "versión 02/10/2026"
-  note: >
-    El dataset del workshop es un subconjunto simplificado para demostración.
-    Ante diferencias, manda la agenda oficial en línea.
+  supplied_source_file: "agenda_tarija_tech_week_2026.md"
+  rule: >
+    El prototipo debe mostrar la procedencia de la agenda activa. Ante diferencias,
+    manda la agenda oficial en línea. Los cambios importados localmente deben quedar
+    identificados como tales y requieren confirmación humana.
