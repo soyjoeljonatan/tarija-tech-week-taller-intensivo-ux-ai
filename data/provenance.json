@@ -1,0 +1,19 @@
+{
+  "event": "Tarija Tech Week 2026",
+  "activeSchedule": "data/agenda-current.json",
+  "baselineSchedule": "data/agenda-baseline.json",
+  "source": {
+    "type": "markdown",
+    "file": "agenda_tarija_tech_week_2026.md",
+    "url": "https://tarijatechweek.com/agenda/",
+    "version": "02/10/2026"
+  },
+  "importedAt": "2026-10-02",
+  "confirmedByHuman": true,
+  "localAdjustments": [],
+  "notes": [
+    "El dataset del workshop es un subconjunto educativo.",
+    "Ante diferencias, manda la agenda oficial en línea.",
+    "Toda importación futura debe pasar por preview/diff y confirmación humana."
+  ]
+}
