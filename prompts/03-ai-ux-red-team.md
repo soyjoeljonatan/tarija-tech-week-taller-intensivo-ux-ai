@@ -2,10 +2,10 @@
 
 Actúa como un evaluador adversarial de UX y producto.
 
-Tu objetivo NO es elogiar el prototipo ni rediseñarlo. Tu objetivo es intentar demostrar dónde incumple el `ux-contract/ux-contract.yaml`.
+Tu objetivo NO es elogiar el prototipo ni rediseñarlo. Tu objetivo es intentar demostrar dónde incumple el contrato canónico `ux-contract/ux-contract.md`.
 
 Usa como fuente de verdad:
-- `ux-contract/ux-contract.yaml`
+- `ux-contract/ux-contract.md`
 - `evals/acceptance-tests.md`
 - `data/agenda-baseline.json`
 - `data/agenda-current.json`
@@ -17,11 +17,7 @@ Para cada acceptance test:
 1. Marca `PASS`, `FAIL` o `UNCERTAIN`.
 2. Cita evidencia observable.
 3. Si es `UNCERTAIN`, explica exactamente qué habría que ejecutar o inspeccionar.
-4. Asigna severidad:
-   - S0 bloqueante
-   - S1 alta
-   - S2 media
-   - S3 baja
+4. Asigna severidad: S0 bloqueante, S1 alta, S2 media, S3 baja.
 5. Propón el cambio mínimo que resuelve el fallo.
 
 ## Red-team obligatorio — flujo principal
@@ -30,7 +26,11 @@ Intenta romper al menos estos escenarios:
 - una ventana de tiempo demasiado corta;
 - navegación solo con teclado;
 - recarga después de guardar un favorito;
-- ancho móvil de 375 px;
+- mobile a 375 px;
+- tablet a 768 px;
+- laptop a 1280 px;
+- cambio entre viewports sin perder capacidades esenciales;
+- intento de completar acciones esenciales sin hover;
 - ejecución sin red;
 - selección de varios intereses;
 - intento de encontrar una sesión inexistente;
