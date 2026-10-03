@@ -1,8 +1,8 @@
 # Prompt 02 — Build / Spec-Driven Prototype
 
-Construye un prototipo funcional mobile-first llamado **TTW Session Scout** usando como fuente de verdad los archivos:
+Construye un prototipo funcional **mobile-first y responsive** llamado **TTW Session Scout** usando como fuentes de verdad:
 
-- `ux-contract/ux-contract.yaml`
+- `ux-contract/ux-contract.md`
 - `data/agenda-baseline.json`
 - `data/agenda-current.json`
 - `data/provenance.json`
@@ -10,6 +10,16 @@ Construye un prototipo funcional mobile-first llamado **TTW Session Scout** usan
 
 ## Regla principal
 El prototipo debe cumplir el contrato; no debes reinterpretarlo como una invitación a agregar features.
+
+## Responsive
+Debe funcionar completamente en:
+- mobile: 375 px;
+- tablet: 768 px;
+- laptop/desktop: 1280 px.
+
+No construyas tres productos diferentes. Mantén el mismo flujo, datos y capacidades esenciales; adapta solo el layout al espacio disponible.
+
+Ninguna acción esencial puede depender de hover.
 
 ## Flujo principal — máximo 3 pasos
 1. Elegir uno o más intereses + disponibilidad.
@@ -48,10 +58,7 @@ Este flujo secundario NO cuenta dentro de los 3 pasos de recomendación.
 - La versión offline no debe depender de imágenes, fuentes, scripts o APIs remotas.
 
 ## Recomendación
-Cada tarjeta debe explicar en una frase por qué apareció, basada solo en:
-- intereses seleccionados;
-- horario;
-- duración disponible.
+Cada tarjeta debe explicar en una frase por qué apareció, basada solo en intereses seleccionados, horario y duración disponible.
 
 No infieras calidad, popularidad o reputación del speaker.
 
@@ -71,6 +78,7 @@ Devuelve una lista breve de:
 - requisitos que implementarás;
 - requisitos que NO implementarás;
 - acceptance tests que usarás para verificar el resultado;
-- riesgos técnicos del parsing de PDF.
+- riesgos técnicos del parsing de PDF;
+- estrategia responsive para 375 / 768 / 1280 px.
 
 Después construye.
