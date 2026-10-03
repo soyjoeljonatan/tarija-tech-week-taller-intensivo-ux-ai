@@ -21,7 +21,7 @@
 | AT-06 | Integridad de datos | Comparar títulos, speakers, horas y salas con `agenda-current` | 0 campos de agenda fabricados | S0 |
 | AT-07 | Keyboard | Usar Tab, Shift+Tab, Enter/Espacio | Todo control interactivo es accesible; focus visible | S1 |
 | AT-08 | No color-only | Revisar selección, éxito, warnings y guardado | Estado comunicado también con texto/iconografía/estructura | S2 |
-| AT-09 | Mobile 375 px | Abrir a 375 px de ancho | Sin scroll horizontal; CTA y contenido siguen utilizables | S1 |
+| AT-09 | Mobile 375 px | Abrir a 375 px de ancho y completar el flujo | Sin scroll horizontal inesperado; CTA, contenido y flujo completo utilizables | S1 |
 | AT-10 | Guardado local | Guardar sesión, recargar la página | Favorito persiste con localStorage | S2 |
 | AT-11 | Offline | Cargar versión local, desconectar red y repetir flujo | Flujo principal sigue operativo sin requests externas | S0 |
 | AT-12 | Reduced motion | Activar `prefers-reduced-motion: reduce` | Animaciones prescindibles se reducen/eliminan | S2 |
@@ -37,6 +37,9 @@
 | AT-22 | Delay offset | Aplicar +10 min a un rango de sesiones | Horas vigentes cambian en `agenda-current`, baseline queda intacto y provenance registra ajuste local | S1 |
 | AT-23 | Failed import rollback | Provocar error de lectura/parsing durante importación | Se mantiene la agenda activa previa y existe opción de reintentar/cancelar | S0 |
 | AT-24 | Baseline immutability | Confirmar una importación o delay y comparar con baseline | `agenda-baseline.json` no cambia | S0 |
+| AT-25 | Tablet 768 px | Abrir a 768 px y completar el flujo principal | Sin overflow inesperado ni contenido crítico cortado; mismas capacidades esenciales que mobile | S1 |
+| AT-26 | Laptop 1280 px | Abrir a 1280 px, completar flujo principal y navegar con teclado | Layout aprovecha el ancho sin cambiar la lógica; todo el flujo sigue utilizable con teclado | S1 |
+| AT-27 | Sin hover obligatorio | Recorrer acciones esenciales en touch/teclado sin hover | Ninguna función esencial requiere hover ni existe solo en un viewport | S1 |
 
 ## Smoke test — flujo principal
 1. Abrir.
@@ -49,6 +52,14 @@
 8. Cambiar filtros.
 9. Forzar un estado sin resultados.
 10. Recuperarse sin reiniciar la aplicación.
+
+## Smoke test — responsive
+1. Completar flujo a 375 px.
+2. Repetir a 768 px.
+3. Repetir a 1280 px.
+4. Verificar ausencia de overflow horizontal inesperado.
+5. Verificar que ninguna acción esencial depende de hover.
+6. En 1280 px, repetir el flujo solo con teclado.
 
 ## Smoke test — actualización de agenda
 1. Revisar versión/fuente activa.
@@ -64,3 +75,5 @@
 
 ## Regla de evaluación
 La importación de archivos es una función secundaria del producto y no debe aumentar el flujo principal de recomendación por encima de 3 pasos.
+
+El requisito responsive exige **usabilidad consistente**, no pixel-perfect idéntico entre viewports.
