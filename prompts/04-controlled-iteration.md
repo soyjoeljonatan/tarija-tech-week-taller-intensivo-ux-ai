@@ -1,7 +1,8 @@
 # Prompt 04 — Controlled Iteration
 
 Tienes:
-- `ux-contract.yaml`
+- `ux-contract/ux-contract.md`;
+- `evals/acceptance-tests.md`;
 - el prototipo actual;
 - el reporte del AI UX Red Team.
 
@@ -17,6 +18,8 @@ Corregir ÚNICAMENTE los 2 fallos de mayor prioridad identificados por el evalua
 - Conserva comportamientos que ya pasaron sus acceptance tests.
 - Mantén el dataset intacto.
 - No introduzcas dependencias externas.
+- No rompas la paridad funcional entre 375 px, 768 px y 1280 px.
+- Ninguna corrección debe introducir acciones esenciales dependientes de hover.
 
 ## Antes del cambio
 Escribe:
@@ -26,9 +29,10 @@ Escribe:
 4. posible regresión.
 
 ## Después del cambio
-Reejecuta solo:
+Reejecuta:
 - los tests afectados;
-- un smoke test del flujo principal.
+- un smoke test del flujo principal;
+- el viewport relacionado si el fallo es responsive.
 
 Devuelve:
 - tests corregidos;
